@@ -1,5 +1,5 @@
 
-        body {
+body {
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -71,3 +71,87 @@
                     text-align: center;
                     line-height: 1.5;
                 }
+
+        .timer {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .timer-controls {
+            display: none;
+            position: fixed;
+            top: 55%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .timer-btn {
+            background: #fbca1f;
+            font-family: 'Press Start 2P', cursive;
+            padding: 0.4em 0.8em;
+            font-size: 12px;
+            border: 2px solid black;
+            border-radius: 0.4em;
+            box-shadow: 0.1em 0.1em;
+            cursor: pointer;
+            margin: 0 5px;
+            color: black;
+        }
+
+        .timer-btn:hover {
+            transform: translate(-0.05em, -0.05em);
+            box-shadow: 0.15em 0.15em;
+        }
+
+        .timer-btn:active {
+            transform: translate(0.05em, 0.05em);
+            box-shadow: 0.05em 0.05em;
+        }
+
+        .timer-control {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            text-align: center;
+        }
+
+        .clock-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 10px;
+            image-rendering: pixelated;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.3));
+        }
+
+        .toggle-timer {
+            display: block;
+            background: #fbca1f;
+            font-family: 'Press Start 2P', cursive;
+            padding: 0.6em 1.3em;
+            font-size: 12px;
+            border: 3px solid black;
+            border-radius: 0.4em;
+            box-shadow: 0.1em 0.1em;
+            cursor: pointer;
+            color: black;
+        }
+
+        .toggle-timer:hover {
+            transform: translate(-0.05em, -0.05em);
+            box-shadow: 0.15em 0.15em;
+        }
+
+        .toggle-timer:active {
+            transform: translate(0.05em, 0.05em);
+            box-shadow: 0.05em 0.05em;
+        }

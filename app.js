@@ -1,7 +1,7 @@
 
-        const colorNames = {
-    '#FF5733': 'Blazing Ember',
-    '#C70039': 'Crimson Storm',
+const colorNames = {
+    '#FF5733': 'Burnt Orange',
+    '#C70039': 'Crimson Red',
     '#900C3F': 'Maroon Mystery',
     '#581845': 'Whispering Plum',
     '#1F618D': 'Deep Ocean Rush',
@@ -107,41 +107,101 @@
     '#468499': 'Deep Ocean Frost'
 };
 
+let isPaused = false;
+let startTime;
+let timerInterval;
+let colorInterval;
+let elapsedTime = 0;
 
+function updateTimer() {
+    if (!isPaused) {
+        const now = new Date();
+        const diff = (now - startTime) + elapsedTime;
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        
+        const displayHours = hours.toString().padStart(2, '0');
+        const displayMinutes = (minutes % 60).toString().padStart(2, '0');
+        const displaySeconds = (seconds % 60).toString().padStart(2, '0');
+        
+        document.getElementById('timer').textContent = `${displayHours}:${displayMinutes}:${displaySeconds}`;
+    }
+}
 
-        function getRandomColor() {
-            // Get random color from our predefined colors
-            const colors = Object.keys(colorNames);
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
+// Event Listeners
+document.getElementById('startButton').addEventListener('click', function() {
+    // Hide the button and tip
+    this.style.display = 'none';
+    document.querySelector('.fullscreen-tip').style.display = 'none';
+    
+    // Show all timer elements
+    document.querySelector('.color-info').style.display = 'block';
+    document.querySelector('.timer-control').style.display = 'block';
+    document.querySelector('.timer-controls').style.display = 'block';
+    document.getElementById('timer').style.display = 'block';
+    
+    // Start the timer
+    startTime = new Date();
+    timerInterval = setInterval(updateTimer, 1000);
+    
+    // Start the color changes
+    changeBackgroundColor();
+    colorInterval = setInterval(changeBackgroundColor, 10000);
+});
 
-        function changeBackgroundColor() {
-            const newColor = getRandomColor();
-            document.body.style.backgroundColor = newColor;
-            document.getElementById('hexCode').textContent = newColor;
-            document.getElementById('colorName').textContent = colorNames[newColor];
+document.getElementById('pauseTimer').addEventListener('click', function() {
+    isPaused = !isPaused;
+    if (isPaused) {
+        elapsedTime += new Date() - startTime;
+        this.textContent = 'Resume';
+    } else {
+        startTime = new Date();
+        this.textContent = 'Pause';
+    }
+});
 
-            // Calculate contrast color for text
-            const r = parseInt(newColor.substr(1,2), 16);
-            const g = parseInt(newColor.substr(3,2), 16);
-            const b = parseInt(newColor.substr(5,2), 16);
-            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-            const textColor = brightness > 128 ? '#000000' : '#FFFFFF';
-            
-            document.getElementById('colorName').style.color = textColor;
-            document.getElementById('hexCode').style.color = textColor;
-        }
+document.getElementById('resetTimer').addEventListener('click', function() {
+    startTime = new Date();
+    elapsedTime = 0;
+    isPaused = false;
+    document.getElementById('pauseTimer').textContent = 'Pause';
+    document.getElementById('timer').textContent = '00:00:00';
+});
 
-        // Replace the keypress listener with button click listener
-        document.getElementById('startButton').addEventListener('click', function() {
-            // Hide the button and tip
-            this.style.display = 'none';
-            document.querySelector('.fullscreen-tip').style.display = 'none';
-            
-            // Show the color info
-            document.querySelector('.color-info').style.display = 'block';
-            
-            // Start the color changes
-            changeBackgroundColor();
-            setInterval(changeBackgroundColor, 10000);
-        });
+document.getElementById('toggleTimer').addEventListener('click', function() {
+    const timer = document.getElementById('timer');
+    const timerControls = document.querySelector('.timer-controls');
+    const isVisible = timer.style.display === 'block';
+    
+    timer.style.display = isVisible ? 'none' : 'block';
+    timerControls.style.display = isVisible ? 'none' : 'block';
+    this.textContent = isVisible ? 'Show Timer' : 'Hide Timer';
+});
+
+// Add this function after the colorNames object
+function getRandomColor() {
+    const colors = Object.keys(colorNames);
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function changeBackgroundColor() {
+    const newColor = getRandomColor();
+    document.body.style.backgroundColor = newColor;
+    document.getElementById('hexCode').textContent = newColor;
+    document.getElementById('colorName').textContent = colorNames[newColor];
+
+    // Calculate contrast color for text
+    const r = parseInt(newColor.substr(1,2), 16);
+    const g = parseInt(newColor.substr(3,2), 16);
+    const b = parseInt(newColor.substr(5,2), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    const textColor = brightness > 128 ? '#000000' : '#FFFFFF';
+    
+    // Apply contrast color to all text elements
+    document.getElementById('colorName').style.color = textColor;
+    document.getElementById('hexCode').style.color = textColor;
+    document.getElementById('timer').style.color = textColor;
+    document.getElementById('toggleTimer').style.color = textColor;
+    document.querySelector('.clock-icon').style.filter = `brightness(${brightness > 128 ? 0 : 100}%)`;
+}
