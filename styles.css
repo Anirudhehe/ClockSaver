@@ -80,7 +80,7 @@ body {
             transform: translate(-50%, -50%);
             font-family: 'Press Start 2P', cursive;
             font-size: 24px;
-            color: #ffffff;
+            color: #181818;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             z-index: 100;
         }

@@ -205,3 +205,23 @@ function changeBackgroundColor() {
     document.getElementById('toggleTimer').style.color = textColor;
     document.querySelector('.clock-icon').style.filter = `brightness(${brightness > 128 ? 0 : 100}%)`;
 }
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("Service Worker Registered"));
+  }
+  let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredPrompt = event;
+  document.getElementById("install-btn").style.display = "block";
+
+  document.getElementById("install-btn").addEventListener("click", () => {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("User installed the app");
+      }
+      deferredPrompt = null;
+    });
+  });
+});
